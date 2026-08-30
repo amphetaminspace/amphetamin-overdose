@@ -1,0 +1,12 @@
+{
+    "app_type": "wsgi",
+    "startup_file": "passenger_wsgi.py",
+    "python": "/usr/bin/python3",
+    "environment": "production",
+    "auto_start": true,
+    "friendly_error_pages": false,
+    "min_instances": 1,
+    "max_requests": 1000,
+    "stat_throttle_rate": 10,
+    "memory_limit": 512
+}

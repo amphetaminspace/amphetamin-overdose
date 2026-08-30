@@ -1,0 +1,30 @@
+# Passenger Configuration for Apache
+# This file enables Passenger for the amphetamin_Overdose app
+
+PassengerAppRoot /var/www/amphetamin-overdose
+PassengerPython /var/www/amphetamin-overdose/venv/bin/python
+PassengerAppType wsgi
+PassengerStartupFile passenger_wsgi.py
+
+# Enable Passenger
+PassengerEnabled On
+
+# Set environment
+SetEnv FLASK_ENV production
+
+# Security headers
+Header always set X-Content-Type-Options "nosniff"
+Header always set X-Frame-Options "DENY"
+Header always set X-XSS-Protection "1; mode=block"
+
+# Deny access to sensitive files
+<FilesMatch "\.(env|log|pkl|py|pyc|sql|db)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Deny access to hidden files
+<FilesMatch "^\.">
+    Order allow,deny
+    Deny from all
+</FilesMatch>

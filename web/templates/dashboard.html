@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>amphetamin_Overdose - Trading Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>⚡ amphetamin_Overdose</h1>
+            <div class="status-bar">
+                <span id="engine-status" class="badge {% if is_running %}badge-success{% else %}badge-danger{% endif %}">
+                    {% if is_running %}RUNNING{% else %}STOPPED{% endif %}
+                </span>
+                <span class="badge {% if paper_trading %}badge-warning{% else %}badge-info{% endif %}">
+                    {% if paper_trading %}PAPER TRADING{% else %}LIVE TRADING{% endif %}
+                </span>
+            </div>
+        </header>
+
+        <!-- Control Panel -->
+        <section class="card">
+            <h2>Control Panel</h2>
+            <div class="controls">
+                <button id="btn-start" class="btn btn-success" onclick="startEngine()" {% if is_running %}disabled{% endif %}>
+                    ▶ Start Engine
+                </button>
+                <button id="btn-stop" class="btn btn-danger" onclick="stopEngine()" {% if not is_running %}disabled{% endif %}>
+                    ⏹ Stop Engine
+                </button>
+                <button id="btn-scan" class="btn btn-primary" onclick="scanMarket()">
+                    🔍 Scan Market
+                </button>
+                <button class="btn btn-secondary" onclick="refreshStatus()">
+                    🔄 Refresh
+                </button>
+            </div>
+        </section>
+
+        <!-- Stats Grid -->
+        <section class="stats-grid">
+            <div class="card stat-card">
+                <h3>Total Trades</h3>
+                <p class="stat-value" id="stat-trades">--</p>
+            </div>
+            <div class="card stat-card">
+                <h3>Win Rate</h3>
+                <p class="stat-value" id="stat-winrate">--</p>
+            </div>
+            <div class="card stat-card">
+                <h3>Total P&L</h3>
+                <p class="stat-value" id="stat-pnl">--</p>
+            </div>
+            <div class="card stat-card">
+                <h3>Open Positions</h3>
+                <p class="stat-value" id="stat-positions">--</p>
+            </div>
+            <div class="card stat-card">
+                <h3>Watchlist</h3>
+                <p class="stat-value" id="stat-pairs">--</p>
+            </div>
+            <div class="card stat-card">
+                <h3>Loss Streak</h3>
+                <p class="stat-value" id="stat-loss-streak">--</p>
+            </div>
+        </section>
+
+        <!-- Configuration -->
+        <section class="card">
+            <h2>Configuration</h2>
+            <table class="config-table">
+                <tr><td>Max Pairs</td><td>{{ max_pairs }}</td></tr>
+                <tr><td>Max Leverage</td><td>{{ max_leverage }}x</td></tr>
+                <tr><td>Risk Per Trade</td><td>{{ risk_per_trade }}%</td></tr>
+                <tr><td>Daily Loss Limit</td><td>{{ daily_loss_limit }}%</td></tr>
+            </table>
+        </section>
+
+        <!-- Recent Trades -->
+        <section class="card">
+            <h2>Recent Trades</h2>
+            <div class="table-container">
+                <table id="trades-table">
+                    <thead>
+                        <tr>
+                            <th>Symbol</th>
+                            <th>Direction</th>
+                            <th>Status</th>
+                            <th>Entry</th>
+                            <th>Exit</th>
+                            <th>P&L %</th>
+                            <th>Strategy</th>
+                        </tr>
+                    </thead>
+                    <tbody id="trades-body">
+                        <tr><td colspan="7" class="loading">Loading...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Watchlist -->
+        <section class="card">
+            <h2>Watchlist</h2>
+            <div class="table-container">
+                <table id="pairs-table">
+                    <thead>
+                        <tr>
+                            <th>Symbol</th>
+                            <th>Score</th>
+                            <th>Volume 24h</th>
+                            <th>Win Rate</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pairs-body">
+                        <tr><td colspan="4" class="loading">Loading...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
